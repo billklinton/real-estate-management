@@ -398,3 +398,18 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
+
+# Custom
+/backend/src/RealEstateManagement.Api/obj
+/backend/src/RealEstateManagement.Api/bin/Debug/net9.0
+/backend/src/RealEstateManagement.Kafka/bin/Debug/net9.0
+/backend/src/RealEstateManagement.Kafka/obj
+/backend/src/RealEstateManagement.Shareable/bin/Debug/net9.0
+/backend/src/RealEstateManagement.Shareable/obj
+/backend/src/RealEstateManagement.Domain/bin/Debug/net9.0
+/backend/src/RealEstateManagement.Domain/obj
+/backend/src/RealEstateManagement.IoC/bin/Debug/net9.0
+/backend/src/RealEstateManagement.IoC/obj
+/backend/src/RealEstateManagement.Data/bin/Debug/net9.0
+/backend/src/RealEstateManagement.Data/obj
+/backend/.vs
