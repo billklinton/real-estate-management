@@ -20,10 +20,7 @@ namespace RealEstateManagement.Api
             .Produces(StatusCodes.Status200OK);
 
             app.MapPost("api/v1/login", static async (IMediator mediator, [FromBody] LoginRequest request) =>
-            {                
-                return await mediator.SendCommand(request);
-            });
-
+                await mediator.SendCommand(request));
         }
 
         static async Task<IResult> SendCommand<T>(this IMediator mediator, IRequest<Result<T>> request, Func<T, IResult> result = null)

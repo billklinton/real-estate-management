@@ -2,6 +2,6 @@
 {
     public interface IBaseRepository<T>
     {
-        Task InserManyAsync(IEnumerable<T> entity);
+        Task InserManyAsync(List<T> entity);
     }
 }

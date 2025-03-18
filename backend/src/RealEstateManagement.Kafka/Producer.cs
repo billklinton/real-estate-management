@@ -30,7 +30,6 @@ namespace RealEstateManagement.Kafka
             };
 
             var deliveryResult = await _producer.ProduceAsync(_topicName, msg);
-            Console.WriteLine($"Sent Message:'{deliveryResult.Value}'. Topic {deliveryResult.TopicPartitionOffset}. Status:{deliveryResult.Status}");
         }
     }
 }

@@ -22,7 +22,7 @@ namespace RealEstateManagement.Domain.Handlers
         public async Task<Result<BaseResponse>> Handle(AddFromCsvFileRequest request, CancellationToken cancellationToken)
         {
             var realEstates = _csvService.ReadCSV(request.Stream);
-            var batchSize = 500;
+            var batchSize = 1000;
             var batchedList = new List<RealEstateDto>();
 
             foreach (var item in realEstates)

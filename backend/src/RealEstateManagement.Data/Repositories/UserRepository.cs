@@ -16,11 +16,11 @@ namespace RealEstateManagement.Data.Repositories
         public async Task<bool> ValidateUserAsync(string email, string password)
         {
             var usr = await _collection.Find(u => u.Email == email && u.PasswordHash == password).FirstOrDefaultAsync();
-            //|| !BCrypt.Verify(userDto.Password, usr.PasswordHash)
+
             return usr != null;
         }
 
-        public Task InserManyAsync(IEnumerable<User> entity)
+        public Task InserManyAsync(List<User> entity)
         {
             throw new NotImplementedException();
         }

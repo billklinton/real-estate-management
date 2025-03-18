@@ -25,6 +25,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RealEstateManagement.Sharea
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RealEstateManagement.Kafka", "src\RealEstateManagement.Kafka\RealEstateManagement.Kafka.csproj", "{A4885858-825B-4A9F-8EA2-E87D67DE3A70}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RealEstateManagement.Worker", "src\RealEstateManagement.Worker\RealEstateManagement.Worker.csproj", "{A4CE3C09-AB6D-4AE8-A9A9-0E381F356EC2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -55,6 +57,10 @@ Global
 		{A4885858-825B-4A9F-8EA2-E87D67DE3A70}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A4885858-825B-4A9F-8EA2-E87D67DE3A70}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A4885858-825B-4A9F-8EA2-E87D67DE3A70}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A4CE3C09-AB6D-4AE8-A9A9-0E381F356EC2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A4CE3C09-AB6D-4AE8-A9A9-0E381F356EC2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A4CE3C09-AB6D-4AE8-A9A9-0E381F356EC2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A4CE3C09-AB6D-4AE8-A9A9-0E381F356EC2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -66,5 +72,6 @@ Global
 		{E5543B39-C6B5-4B14-940C-00DF15FE6BE4} = {30F475DD-6701-463F-A47B-A4CA887ABF4F}
 		{7BCE256E-A9DA-443F-80F0-295C7303E396} = {30F475DD-6701-463F-A47B-A4CA887ABF4F}
 		{A4885858-825B-4A9F-8EA2-E87D67DE3A70} = {956560A5-4346-4C5E-9178-409DDEC91325}
+		{A4CE3C09-AB6D-4AE8-A9A9-0E381F356EC2} = {54B55F99-1196-4651-B7F3-8A929B611066}
 	EndGlobalSection
 EndGlobal

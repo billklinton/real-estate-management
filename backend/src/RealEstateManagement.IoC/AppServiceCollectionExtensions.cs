@@ -27,6 +27,15 @@ namespace RealEstateManagement.IoC
             services.AddSingleton(appConfig);
         }
 
+        public static void ConfigureWorkerAppDependencies(this IServiceCollection services, IConfiguration configuration)
+        {
+            AppConfig appConfig = new();
+            configuration.Bind(appConfig);
+            configuration.GetSection("KafkaConfig").Bind(appConfig.KafkaConfig);
+
+            services.AddSingleton(appConfig);
+        }
+
         public static void ConfigureServices(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddScoped<IProducer, Producer>();

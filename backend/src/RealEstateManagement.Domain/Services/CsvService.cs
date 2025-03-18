@@ -3,6 +3,7 @@ using CsvHelper.Configuration;
 using RealEstateManagement.Shareable.CsvMappers;
 using RealEstateManagement.Shareable.Dtos;
 using System.Globalization;
+using System.Text;
 
 namespace RealEstateManagement.Domain.Services
 {
@@ -10,7 +11,7 @@ namespace RealEstateManagement.Domain.Services
     {
         public List<RealEstateDto> ReadCSV(Stream file)
         {
-            var reader = new StreamReader(file);
+            var reader = new StreamReader(file, Encoding.Latin1);
             var config = new CsvConfiguration(CultureInfo.InvariantCulture)
             {
                 HeaderValidated = null,

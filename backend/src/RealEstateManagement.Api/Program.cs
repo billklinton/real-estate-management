@@ -1,16 +1,11 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.IdentityModel.Tokens;
 using RealEstateManagement.Api;
 using RealEstateManagement.IoC;
-using RealEstateManagement.Shareable.Configs;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
-////builder.Services.Configure<KestrelServerOptions>(options =>
-////{
-////    options.Limits.MaxRequestBodySize = 200 * 1024 * 1024; // 100MB
-////});
+
 // Add services to the container.
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();

@@ -9,7 +9,7 @@ namespace RealEstateManagement.Data.Repositories
 
         public BaseRepository(IMongoCollection<T> collection) => _collection = collection;
 
-        public async Task InserManyAsync(IEnumerable<T> entity)
+        public async Task InserManyAsync(List<T> entity)
         {
             await _collection.InsertManyAsync(entity);
         }

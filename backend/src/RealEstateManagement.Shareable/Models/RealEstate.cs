@@ -6,8 +6,8 @@ namespace RealEstateManagement.Shareable.Models
     public class RealEstate
     {
         [BsonId]
-        [BsonRepresentation(BsonType.ObjectId)]
-        public string Id { get; set; } = default!;
+        [BsonRepresentation(BsonType.String)]
+        public Guid Id { get; set; } = default!;
 
         public string PropertyNumber { get; set; } = default!;
 

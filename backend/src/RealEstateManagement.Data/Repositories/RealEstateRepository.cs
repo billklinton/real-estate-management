@@ -13,7 +13,7 @@ namespace RealEstateManagement.Data.Repositories
             _collection = collection;
         }
 
-        public async Task InserManyAsync(IEnumerable<RealEstate> entity)
+        public async Task InserManyAsync(List<RealEstate> entity)
         {
             await _collection.InsertManyAsync(entity);
         }
