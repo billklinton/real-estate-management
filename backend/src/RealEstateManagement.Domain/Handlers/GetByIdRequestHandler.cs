@@ -23,7 +23,7 @@ namespace RealEstateManagement.Domain.Handlers
             var realEstate = await _realEstateRepository.GetByIdAsync(request.Id);
 
             if (realEstate is null)
-                return Result.Error<BaseResponse<RealEstateDto>>(new NotFoundException("Real Estate not found"));
+                return new NotFoundException("Real Estate not found");
 
             return Result.Success(new BaseResponse<RealEstateDto>(200, "Success", RealEstateMapper.ToDto(realEstate)));
         }

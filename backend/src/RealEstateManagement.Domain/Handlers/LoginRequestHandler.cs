@@ -28,7 +28,7 @@ namespace RealEstateManagement.Domain.Handlers
             var validated = await _userRepository.ValidateUserAsync(request.Email, request.Password);
 
             if (!validated)
-                return Result.Error<TokenResponse>(new UnauthorizedException());
+                return new UnauthorizedException();
 
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(_appConfig.TokenConfig.JWTKey);

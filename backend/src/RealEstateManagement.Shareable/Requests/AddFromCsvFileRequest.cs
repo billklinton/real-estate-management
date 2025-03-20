@@ -1,9 +1,9 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Http;
 using OperationResult;
-using RealEstateManagement.Shareable.Dtos;
 using RealEstateManagement.Shareable.Responses;
 
 namespace RealEstateManagement.Shareable.Requests
 {
-    public record AddFromCsvFileRequest(Stream Stream) : IRequest<Result<BaseResponse<string>>>;
+    public record AddFromCsvFileRequest(IFormFileCollection Files) : IRequest<Result<BaseResponse<string>>>;
 }

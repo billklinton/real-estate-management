@@ -12,8 +12,7 @@ namespace RealEstateManagement.Api
         {
             app.MapPost("api/v1/add-from-csvfile", static async (IMediator mediator, [FromForm] IFormFileCollection file) =>
             {
-                var stream = file[0].OpenReadStream();
-                return await mediator.SendCommand(new AddFromCsvFileRequest(stream));
+                return await mediator.SendCommand(new AddFromCsvFileRequest(file));
             })
             .DisableAntiforgery()
             .RequireAuthorization()
@@ -45,7 +44,7 @@ namespace RealEstateManagement.Api
         static IResult HandleError(Exception error)
             => error switch
             {
-                InvalidArgumentException e => Results.BadRequest(new { statusCode = 400, e.Message }),
+                DataInvalidException e => Results.BadRequest(new { statusCode = 400, e.Message, e.Errors }),
                 NotFoundException e => Results.NotFound(new { statusCode = 404, e.Message }),
                 UnauthorizedException e => Results.Json(new { statusCode = 401, e.Message }, statusCode: 401) ,
                 Shareable.Exceptions.ApplicationException e => Results.InternalServerError(new { statusCode = 500, e.Message }),

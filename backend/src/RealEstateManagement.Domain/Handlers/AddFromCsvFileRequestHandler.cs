@@ -21,10 +21,11 @@ namespace RealEstateManagement.Domain.Handlers
 
         public async Task<Result<BaseResponse<string>>> Handle(AddFromCsvFileRequest request, CancellationToken cancellationToken)
         {
-            var realEstates = _csvService.ReadCSV(request.Stream);
+            var stream = request.Files[0].OpenReadStream();
+            var realEstates = _csvService.ReadCSV(stream);
 
             if (realEstates == null)
-                return Result.Error<BaseResponse<string>>(new ApplicationException("Error processing the given file"));            
+                return new ApplicationException("Error processing the given file");            
 
             var batchSize = 1000;
             var batchedList = new List<RealEstateDto>();

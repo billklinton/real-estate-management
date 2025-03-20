@@ -1,4 +1,6 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using FluentValidation;
+using MediatR;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using MongoDB.Driver;
 using RealEstateManagement.Data.Repositories;
@@ -6,8 +8,10 @@ using RealEstateManagement.Domain;
 using RealEstateManagement.Domain.Repositories;
 using RealEstateManagement.Domain.Services;
 using RealEstateManagement.Kafka;
+using RealEstateManagement.Shareable;
 using RealEstateManagement.Shareable.Configs;
 using RealEstateManagement.Shareable.Models;
+using RealEstateManagement.Shareable.Pipelines;
 
 namespace RealEstateManagement.IoC
 {
@@ -18,6 +22,10 @@ namespace RealEstateManagement.IoC
             services.AddMediatR(cfg => {
                 cfg.RegisterServicesFromAssembly(typeof(IDomainEntryPoint).Assembly);
             });
+            services.AddValidatorsFromAssembly(typeof(IShareableEntryPoint).Assembly);
+
+            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationPipelineBehavior<,>));
+            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ExceptionPipelineBehavior<,>));
 
             AppConfig appConfig = new();
             configuration.Bind(appConfig);
