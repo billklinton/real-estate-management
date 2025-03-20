@@ -26,7 +26,7 @@ namespace RealEstateManagement.Domain.Services
 
                 using (var csv = new CsvReader(reader, config))
                 {
-                    csv.Context.RegisterClassMap<RealEstateMap>();
+                    csv.Context.RegisterClassMap<RealEstateCSVMapper>();
                     records = csv.GetRecords<RealEstateDto>().ToList();
                 }
 

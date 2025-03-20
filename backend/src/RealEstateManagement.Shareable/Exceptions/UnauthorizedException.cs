@@ -2,7 +2,7 @@
 {
     public class UnauthorizedException : ApplicationException
     {
-        public UnauthorizedException(string mensagem) : base(mensagem)
+        public UnauthorizedException(string mensagem = "Invalid user credentials!") : base(mensagem)
         {
         }
     }

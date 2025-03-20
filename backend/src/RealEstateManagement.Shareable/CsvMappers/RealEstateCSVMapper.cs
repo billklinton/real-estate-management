@@ -3,9 +3,9 @@ using RealEstateManagement.Shareable.Dtos;
 
 namespace RealEstateManagement.Shareable.CsvMappers
 {
-    public class RealEstateMap : ClassMap<RealEstateDto>
+    public class RealEstateCSVMapper : ClassMap<RealEstateDto>
     {
-        public RealEstateMap()
+        public RealEstateCSVMapper()
         {
             Map(m => m.PropertyNumber).Name("PropertyNumber");
             Map(m => m.State).Name("State");
