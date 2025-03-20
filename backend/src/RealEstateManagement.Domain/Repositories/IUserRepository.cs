@@ -1,5 +1,4 @@
-﻿using RealEstateManagement.Shareable.Dtos;
-using RealEstateManagement.Shareable.Models;
+﻿using RealEstateManagement.Shareable.Models;
 
 namespace RealEstateManagement.Domain.Repositories
 {

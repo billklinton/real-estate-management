@@ -9,26 +9,33 @@ namespace RealEstateManagement.Domain.Services
 {
     public class CsvService : ICsvService
     {
-        public List<RealEstateDto> ReadCSV(Stream file)
+        public List<RealEstateDto>? ReadCSV(Stream file)
         {
-            var reader = new StreamReader(file, Encoding.Latin1);
-            var config = new CsvConfiguration(CultureInfo.InvariantCulture)
+            try
             {
-                HeaderValidated = null,
-                MissingFieldFound = null,
-                TrimOptions = TrimOptions.Trim,
-                Delimiter = ";"
-            };
+                var reader = new StreamReader(file, Encoding.Latin1);
+                var config = new CsvConfiguration(CultureInfo.InvariantCulture)
+                {
+                    HeaderValidated = null,
+                    MissingFieldFound = null,
+                    TrimOptions = TrimOptions.Trim,
+                    Delimiter = ";"
+                };
 
-            var records = new List<RealEstateDto>();
+                var records = new List<RealEstateDto>();
 
-            using (var csv = new CsvReader(reader, config))
-            {
-                csv.Context.RegisterClassMap<RealEstateMap>();
-                records = csv.GetRecords<RealEstateDto>().ToList();     
+                using (var csv = new CsvReader(reader, config))
+                {
+                    csv.Context.RegisterClassMap<RealEstateMap>();
+                    records = csv.GetRecords<RealEstateDto>().ToList();
+                }
+
+                return records;
             }
-
-            return records;
+            catch 
+            {
+                return null;
+            }            
         }
     }
 }

@@ -8,7 +8,7 @@ using RealEstateManagement.Shareable.Responses;
 
 namespace RealEstateManagement.Domain.Handlers
 {
-    public class AddFromCsvFileRequestHandler : IRequestHandler<AddFromCsvFileRequest, Result<BaseResponse>>
+    public class AddFromCsvFileRequestHandler : IRequestHandler<AddFromCsvFileRequest, Result<BaseResponse<string>>>
     {
         private readonly IProducer _producer;
         private readonly ICsvService _csvService;
@@ -19,9 +19,13 @@ namespace RealEstateManagement.Domain.Handlers
             _csvService = csvService;
         }
 
-        public async Task<Result<BaseResponse>> Handle(AddFromCsvFileRequest request, CancellationToken cancellationToken)
+        public async Task<Result<BaseResponse<string>>> Handle(AddFromCsvFileRequest request, CancellationToken cancellationToken)
         {
             var realEstates = _csvService.ReadCSV(request.Stream);
+
+            if (realEstates == null)
+                return Result.Error<BaseResponse<string>>(new ApplicationException("Error processing the given file"));            
+
             var batchSize = 1000;
             var batchedList = new List<RealEstateDto>();
 
@@ -39,7 +43,7 @@ namespace RealEstateManagement.Domain.Handlers
             if (batchedList.Count > 0)            
                 await _producer.SendMessageAsync(batchedList);            
 
-            return Result.Success(new BaseResponse(200, "OK"));
+            return Result.Success(new BaseResponse<string>(200, "All real estate records have been successfully processed.", "Success"));
         }
     }
 }

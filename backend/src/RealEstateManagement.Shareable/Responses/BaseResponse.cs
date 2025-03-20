@@ -1,4 +1,4 @@
 ﻿namespace RealEstateManagement.Shareable.Responses
 {
-    public record BaseResponse(int StatusCode, string Message);
+    public record BaseResponse<T>(int StatusCode, string Message, T Result = default!);
 }

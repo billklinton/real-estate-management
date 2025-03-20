@@ -5,5 +5,5 @@ using RealEstateManagement.Shareable.Responses;
 
 namespace RealEstateManagement.Shareable.Requests
 {
-    public record AddFromCsvFileRequest(Stream Stream) : IRequest<Result<BaseResponse<string>>>;
+    public record GetRealEstateRequest(int Page, int PageSize, string? State = null, string? City = null, string? SaleMode = null) : IRequest<Result<BaseResponse<List<RealEstateDto>>>>;
 }

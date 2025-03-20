@@ -24,5 +24,24 @@ namespace RealEstateManagement.Domain.Mappers
 
         public static List<RealEstate> ToListModel(List<RealEstateDto> realEstateDtoList) =>
             realEstateDtoList.Select(ToModel).ToList();
+
+        public static RealEstateDto ToDto(RealEstate realEstate) =>
+            new()
+            {
+                AccessLink = realEstate.AccessLink,
+                Address = realEstate.Address,
+                AppraisalValue = realEstate.AppraisalValue,
+                City = realEstate.City,
+                Description = realEstate.Description,
+                Discount = realEstate.Discount,
+                Neighborhood = realEstate.Neighborhood,
+                Price = realEstate.Price,
+                PropertyNumber = realEstate.PropertyNumber,
+                SaleMode = realEstate.SaleMode,
+                State = realEstate.State
+            };
+
+        public static List<RealEstateDto> ToListDto(List<RealEstate> realEstateList) =>
+            realEstateList.Select(ToDto).ToList();
     }
 }
