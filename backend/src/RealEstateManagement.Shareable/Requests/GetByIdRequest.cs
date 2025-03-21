@@ -5,5 +5,5 @@ using RealEstateManagement.Shareable.Responses;
 
 namespace RealEstateManagement.Shareable.Requests
 {
-    public record GetByIdRequest(Guid Id) : IRequest<Result<BaseResponse<RealEstateDto>>>;
+    public record GetByIdRequest(Guid? Id) : IRequest<Result<BaseResponse<RealEstateDto>>>;
 }

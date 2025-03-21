@@ -32,7 +32,7 @@ namespace RealEstateManagement.Data.Repositories
                                           .ToListAsync();
         }
 
-        public async Task<RealEstate> GetByIdAsync(Guid id)
+        public async Task<RealEstate> GetByIdAsync(Guid? id)
             => await _collection.Find(x => x.Id == id).FirstOrDefaultAsync();        
 
         public async Task InserManyAsync(List<RealEstate> entity)

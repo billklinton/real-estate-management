@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using OperationResult;
 using RealEstateManagement.Shareable.Exceptions;
 using RealEstateManagement.Shareable.Requests;
+using RealEstateManagement.Shareable.Responses;
 
 namespace RealEstateManagement.Api
 {
@@ -21,7 +22,7 @@ namespace RealEstateManagement.Api
             app.MapPost("api/v1/login", static async (IMediator mediator, [FromBody] LoginRequest request) =>
                 await mediator.SendCommand(request));
 
-            app.MapGet("api/v1/getById", static async (IMediator mediator, [FromQuery] Guid id) =>
+            app.MapGet("api/v1/getById", static async (IMediator mediator, [FromQuery] Guid? id) =>
             {                
                 return await mediator.SendCommand(new GetByIdRequest(id));
             })
@@ -44,11 +45,11 @@ namespace RealEstateManagement.Api
         static IResult HandleError(Exception error)
             => error switch
             {
-                DataInvalidException e => Results.BadRequest(new { statusCode = 400, e.Message, e.Errors }),
-                NotFoundException e => Results.NotFound(new { statusCode = 404, e.Message }),
-                UnauthorizedException e => Results.Json(new { statusCode = 401, e.Message }, statusCode: 401) ,
-                Shareable.Exceptions.ApplicationException e => Results.InternalServerError(new { statusCode = 500, e.Message }),
-                _ => Results.InternalServerError(new { statusCode = 500, error.Message })
+                DataInvalidException e => Results.BadRequest(new BaseResponse<IEnumerable<string>>(400, e.Message, e.Errors)),
+                NotFoundException e => Results.NotFound(new BaseResponse<string>(404, e.Message)),
+                UnauthorizedException e => Results.Json(new BaseResponse<string>(401, e.Message), statusCode: 401) ,
+                Shareable.Exceptions.ApplicationException e => Results.InternalServerError(new BaseResponse<string>(500, e.Message)),
+                _ => Results.InternalServerError(new BaseResponse<string>(500, error.Message))
             };
     }
 }
