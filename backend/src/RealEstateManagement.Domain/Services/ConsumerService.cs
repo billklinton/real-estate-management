@@ -29,10 +29,8 @@ namespace RealEstateManagement.Domain.Services
                     await _realEstateRepository.InserManyAsync(realStateList);
                 }
             }
-            catch (Exception ex)
+            catch
             {
-
-                throw;
             }
         }
     }

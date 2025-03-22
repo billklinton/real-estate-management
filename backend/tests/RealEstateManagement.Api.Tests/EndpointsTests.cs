@@ -58,7 +58,7 @@ public class EndpointsTests
 
     //    // Assert
     //    result.StatusCode.Should().Be(HttpStatusCode.OK);
-    //    await _mediator.Received(1).Send(Arg.Any<AddFromCsvFileRequest>(), Arg.Any<CancellationToken>());
+    //    await _mediator.Received().Send(Arg.Any<AddFromCsvFileRequest>(), Arg.Any<CancellationToken>());
     //}
 
     [Fact]
@@ -77,7 +77,7 @@ public class EndpointsTests
 
         // Assert
         result.StatusCode.Should().Be(HttpStatusCode.OK);
-        await _mediator.Received(1).Send(Arg.Is<LoginRequest>(x => x.Email == loginRequest.Email && x.Password == loginRequest.Password));
+        await _mediator.Received().Send(Arg.Is<LoginRequest>(x => x.Email == loginRequest.Email && x.Password == loginRequest.Password));
     }
 
     [Fact]
@@ -105,7 +105,7 @@ public class EndpointsTests
         var msg = await result.Content.ReadAsStringAsync();
         msg.Should().ContainAny("Email can't be empty or invalid");
         msg.Should().ContainAny("Password can't be empty");
-        await _mediator.Received(1).Send(Arg.Is<LoginRequest>(x => x.Email == loginRequest.Email && x.Password == loginRequest.Password));
+        await _mediator.Received().Send(Arg.Is<LoginRequest>(x => x.Email == loginRequest.Email && x.Password == loginRequest.Password));
     }
 
     [Fact]
@@ -126,7 +126,7 @@ public class EndpointsTests
         result.StatusCode.Should().Be(HttpStatusCode.Unauthorized);
         var response = await result.Content.ReadFromJsonAsync<BaseResponse<string>>();
         response!.Message.Should().Be("Invalid user credentials!");
-        await _mediator.Received(1).Send(Arg.Is<LoginRequest>(x => x.Email == loginRequest.Email && x.Password == loginRequest.Password));
+        await _mediator.Received().Send(Arg.Is<LoginRequest>(x => x.Email == loginRequest.Email && x.Password == loginRequest.Password));
     }
 
     [Fact]
@@ -152,7 +152,7 @@ public class EndpointsTests
         var realEstateDtoResponse = await result.Content.ReadFromJsonAsync<BaseResponse<RealEstateDto>>();
         realEstateDtoResponse!.Result.PropertyNumber.Should().Be(realEstateDto.PropertyNumber);
         realEstateDtoResponse!.Result.City.Should().Be(realEstateDto.City);
-        await _mediator.Received(1).Send(Arg.Is<GetByIdRequest>(x => x.Id == id));
+        await _mediator.Received().Send(Arg.Is<GetByIdRequest>(x => x.Id == id));
     }
 
     [Fact]
@@ -195,7 +195,7 @@ public class EndpointsTests
         result.StatusCode.Should().Be(HttpStatusCode.NotFound);
         var response = await result.Content.ReadFromJsonAsync<BaseResponse<string>>();
         response!.Message.Should().Be("Real Estate not found");
-        await _mediator.Received(1).Send(Arg.Is<GetByIdRequest>(x => x.Id == id));
+        await _mediator.Received().Send(Arg.Is<GetByIdRequest>(x => x.Id == id));
     }
 
     [Fact]
@@ -229,7 +229,7 @@ public class EndpointsTests
         var realEstateDtoResponse = await result.Content.ReadFromJsonAsync<BaseResponse<List<RealEstateDto>>>();
         realEstateDtoResponse!.Message.Should().Be("Success");
         realEstateDtoResponse!.Result.Should().HaveCount(2);
-        await _mediator.Received(1).Send(Arg.Is<GetRealEstateRequest>(x => x.Page == getRequest.Page &&
+        await _mediator.Received().Send(Arg.Is<GetRealEstateRequest>(x => x.Page == getRequest.Page &&
                                                                            x.PageSize == getRequest.PageSize &&
                                                                            x.State == getRequest.State &&
                                                                            x.City == getRequest.City &&
@@ -261,7 +261,7 @@ public class EndpointsTests
         var msg = await result.Content.ReadAsStringAsync();
         msg.Should().ContainAny("Page must be greater than or equal to 0");
         msg.Should().ContainAny("PageSize must be between 1 and 100");
-        await _mediator.Received(1).Send(Arg.Is<GetRealEstateRequest>(x => x.Page == getRequest.Page &&
+        await _mediator.Received().Send(Arg.Is<GetRealEstateRequest>(x => x.Page == getRequest.Page &&
                                                                            x.PageSize == getRequest.PageSize &&
                                                                            x.State == getRequest.State &&
                                                                            x.City == getRequest.City &&
@@ -284,10 +284,20 @@ public class EndpointsTests
         result.StatusCode.Should().Be(HttpStatusCode.NotFound);
         var response = await result.Content.ReadFromJsonAsync<BaseResponse<string>>();
         response!.Message.Should().Be("Real Estates were not found");
-        await _mediator.Received(1).Send(Arg.Is<GetRealEstateRequest>(x => x.Page == getRequest.Page &&
+        await _mediator.Received().Send(Arg.Is<GetRealEstateRequest>(x => x.Page == getRequest.Page &&
                                                                            x.PageSize == getRequest.PageSize &&
                                                                            x.State == getRequest.State &&
                                                                            x.City == getRequest.City &&
                                                                            x.SaleMode == getRequest.SaleMode));
+    }
+
+    [Fact]
+    public async Task WhenValidUrl_ReturnsNotFound()
+    {
+        // Act
+        var result = await _client.GetAsync("");
+
+        // Assert
+        result.StatusCode.Should().Be(HttpStatusCode.NotFound);
     }
 }

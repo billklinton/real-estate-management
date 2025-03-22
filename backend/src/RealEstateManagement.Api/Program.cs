@@ -2,8 +2,10 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using RealEstateManagement.Api;
 using RealEstateManagement.IoC;
+using System.Diagnostics.CodeAnalysis;
 using System.Text;
 
+[ExcludeFromCodeCoverage]
 public class Program
 {
     private static void Main(string[] args)
