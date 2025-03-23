@@ -12,9 +12,7 @@ namespace RealEstateManagement.Api
         public static void MapEndpoints(this IEndpointRouteBuilder app)
         {
             app.MapPost("api/v1/add-from-csvfile", static async (IMediator mediator, [FromForm] IFormFileCollection file) =>
-            {
-                return await mediator.SendCommand(new AddFromCsvFileRequest(file));
-            })
+                await mediator.SendCommand(new AddFromCsvFileRequest(file)))
             .DisableAntiforgery()
             .RequireAuthorization()
             .Produces(StatusCodes.Status200OK);
@@ -23,15 +21,11 @@ namespace RealEstateManagement.Api
                 await mediator.SendCommand(request));
 
             app.MapGet("api/v1/getById", static async (IMediator mediator, [FromQuery] Guid? id) =>
-            {                
-                return await mediator.SendCommand(new GetByIdRequest(id));
-            })
+                await mediator.SendCommand(new GetByIdRequest(id)))
             .RequireAuthorization();
 
-            app.MapGet("api/v1/get", static async (IMediator mediator, [FromQuery] string? state = null, [FromQuery] string? city = null, [FromQuery] string? saleMode = null, [FromQuery] int page = 0 , [FromQuery] int pageSize = 20) =>
-            {
-                return await mediator.SendCommand(new GetRealEstateRequest(page, pageSize, state, city, saleMode));
-            })
+            app.MapGet("api/v1/get", static async (IMediator mediator, [FromQuery] string? state = null, [FromQuery] string? city = null, [FromQuery] string? saleMode = null, [FromQuery] int page = 0, [FromQuery] int pageSize = 20) =>
+                await mediator.SendCommand(new GetRealEstateRequest(page, pageSize, state, city, saleMode)))
             .RequireAuthorization();
         }
 
@@ -47,7 +41,7 @@ namespace RealEstateManagement.Api
             {
                 DataInvalidException e => Results.BadRequest(new BaseResponse<IEnumerable<string>>(400, e.Message, e.Errors)),
                 NotFoundException e => Results.NotFound(new BaseResponse<string>(404, e.Message)),
-                UnauthorizedException e => Results.Json(new BaseResponse<string>(401, e.Message), statusCode: 401) ,
+                UnauthorizedException e => Results.Json(new BaseResponse<string>(401, e.Message), statusCode: 401),
                 Shareable.Exceptions.ApplicationException e => Results.InternalServerError(new BaseResponse<string>(500, e.Message)),
                 _ => Results.InternalServerError(new BaseResponse<string>(500, error.Message))
             };

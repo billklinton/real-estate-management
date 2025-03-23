@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using NSubstitute;
-using OperationResult;
 using RealEstateManagement.Shareable.Requests;
 using RealEstateManagement.Shareable.Responses;
 using FluentAssertions;
@@ -11,9 +10,7 @@ using System.Text;
 using System.Net;
 using RealEstateManagement.Shareable.Exceptions;
 using System.Net.Http.Headers;
-using RealEstateManagement.Domain.Mappers;
 using RealEstateManagement.Shareable.Dtos;
-using RealEstateManagement.Shareable.Models;
 using System.Net.Http.Json;
 
 namespace RealEstateManagement.Api.Tests;
@@ -29,37 +26,57 @@ public class EndpointsTests
         _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("TestBearer", "mock-token");
     }
 
-    //[Fact]
-    //public async Task AddFromCsvFileRequest_WhenValid_ReturnsOk()
-    //{
-    //    // Arrange
-    //    var content = "dummy,csv,content";
-    //    var bytes = Encoding.UTF8.GetBytes(content);
-    //    var stream = new MemoryStream(bytes);
-    //    IFormFile file = new FormFile(stream, 0, stream.Length, "file", "test.csv")
-    //    {
-    //        Headers = new HeaderDictionary(),
-    //        ContentType = "text/csv"
-    //    };
+    [Fact]
+    public async Task AddFromCsvFileRequest_WhenValid_ReturnsOk()
+    {
+        // Arrange
+        var response = new BaseResponse<string>(200, "All real estate records have been successfully processed.", "Success");
+        _mediator.Send(Arg.Any<AddFromCsvFileRequest>()).Returns(response);
 
-    //    var fileCollection = new FormFileCollection { file };
+        var content = "dummy,csv,content";
+        var bytes = Encoding.UTF8.GetBytes(content);
+        using var httpContent = new MultipartFormDataContent
+        {
+            { new ByteArrayContent(bytes) { Headers = { ContentType = new MediaTypeHeaderValue("text/csv") } }, "Files", "test.csv" }
+        };
 
-    //    var request = new AddFromCsvFileRequest(fileCollection);
-    //    var response = new BaseResponse<string>(200, "All real estate records have been successfully processed.", "Success");
+        // Act
+        var result = await _client.PostAsync("api/v1/add-from-csvfile", httpContent);
 
-    //    _mediator.Send(request)
-    //        .Returns(Result.Success(response));
+        // Assert
+        result.StatusCode.Should().Be(HttpStatusCode.OK);
+        await _mediator.Received().Send(Arg.Any<AddFromCsvFileRequest>(), Arg.Any<CancellationToken>());
+    }
 
-    //    using var contentt = new MultipartFormDataContent();
-    //    contentt.Add(new StreamContent(new MemoryStream(Encoding.UTF8.GetBytes("dummy,csv,content"))), "file", "test.csv");
+    [Fact]
+    public async Task AddFromCsvFileRequest_WhenInvalid_ReturnsBadRequest()
+    {
+        // Arrange
+        var request = new AddFromCsvFileRequest(default!);
+        var errors = new Dictionary<string, IEnumerable<string>>
+        {
+            { "Files", new List<string> { "At least one file must be uploaded" } }
+        };
+        var ex = new DataInvalidException(errors);
 
-    //    // Act
-    //    var result = await _client.PostAsync("api/v1/add-from-csvfile", contentt);
+        _mediator.Send(Arg.Any<AddFromCsvFileRequest>()).Returns(ex);
 
-    //    // Assert
-    //    result.StatusCode.Should().Be(HttpStatusCode.OK);
-    //    await _mediator.Received().Send(Arg.Any<AddFromCsvFileRequest>(), Arg.Any<CancellationToken>());
-    //}
+        var content = "dummy,csv,content";
+        var bytes = Encoding.UTF8.GetBytes(content);
+        using var httpContent = new MultipartFormDataContent
+        {
+            { new ByteArrayContent(bytes) { Headers = { ContentType = new MediaTypeHeaderValue("text/csv") } }, "Files", "test.csv" }
+        };        
+
+        // Act
+        var result = await _client.PostAsync("api/v1/add-from-csvfile", httpContent);
+
+        // Assert
+        result.StatusCode.Should().Be(HttpStatusCode.BadRequest);
+        var msg = await result.Content.ReadAsStringAsync();
+        msg.Should().ContainAny("At least one file must be uploaded");
+        await _mediator.Received().Send(Arg.Any<AddFromCsvFileRequest>(), Arg.Any<CancellationToken>());
+    }
 
     [Fact]
     public async Task LoginRequest_WhenValid_ReturnsOk()
