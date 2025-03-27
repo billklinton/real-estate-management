@@ -21,6 +21,8 @@ public class Program
         builder.Services.ConfigureAppDependencies(builder.Configuration);
         builder.Services.ConfigureServices(builder.Configuration);
         builder.Services.ConfigureDatabase(builder.Configuration);
+        builder.Services.AddCors();
+
         var key = builder.Configuration.GetSection("TokenConfig:JWTKey").Value.ToString();
         builder.Services.AddAuthentication(x =>
         {
@@ -44,6 +46,7 @@ public class Program
         builder.Services.AddAuthorization();
 
         var app = builder.Build();
+        app.UseCors(x => x.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
 
         app.UseAuthentication();
         app.UseAuthorization();
