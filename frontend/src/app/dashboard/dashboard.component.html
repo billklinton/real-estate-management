@@ -1,0 +1,136 @@
+<div class="container">
+    <!-- Header -->
+    <header class="header">
+        <div class="logo">
+            <img src="../../assets/icon.png" alt="Real Estate Icon">
+            <h1>Real Estate Management</h1>
+        </div>
+        <button class="logout-button" (click)="logout()">Logout</button>
+    </header>
+
+    <!-- File Upload Section -->
+    <section class="upload-section">
+        <div class="upload-controls">
+            <button type="button" class="info-button" (click)="toggleInfo()">
+                How to upload?
+              </button>
+          <input type="file" (change)="onFileSelected($event)" accept=".csv" #fileInput>
+          <button (click)="uploadFile()" [disabled]="!selectedFile || isUploading">
+            {{ isUploading ? 'Uploading...' : 'Upload CSV' }}
+          </button>
+          
+        </div>
+        <div *ngIf="showInfo" class="info-message">
+          <p>
+            Please upload a CSV file with the following headers: <br>
+            <strong>PropertyNumber;State;City;Neighborhood;Address;Price;AppraisalValue;Discount;Description;SaleMode;AccessLink</strong><br>
+            <em>The file must be separated by semicolons (;)</em>
+          </p>
+        </div>
+        <div *ngIf="uploadError" class="error-message">
+          {{ uploadError }}
+        </div>
+        <div *ngIf="uploadSuccess" class="success-message">
+          File uploaded successfully!
+        </div>
+      </section>
+    <hr>
+    <!-- Filters Section -->
+    <section class="filters-section">
+        <h2>Filters</h2>
+        <div class="filter-controls">
+            <div class="filter">
+                <label for="stateSelect">State:</label>
+                <select id="stateSelect" [formControl]="stateControl">
+                    <option value="ALL">All</option>
+                    <option *ngFor="let state of states" [value]="state.uf">{{ state.uf }}</option>
+                </select>
+            </div>
+            <div class="filter city">
+                <label for="citySelect">City:</label>
+                <select id="citySelect" [formControl]="cityControl">
+                    <option value="ALL">All</option>
+                    <option *ngFor="let city of cities" [value]="city">{{ city }}</option>
+                </select>
+            </div>
+            <div class="filter">
+                <label for="saleModeSelect">Sale Mode:</label>
+                <select id="saleModeSelect" [formControl]="saleModeControl">
+                    <option value="ALL">All</option>
+                    <option value="Venda Online">Venda Online</option>
+                    <option value="Venda Direta Online">Venda Direta Online</option>
+                    <option value="Licitação Aberta">Licitação Aberta</option>
+                    <option value="Leilão SFI - Edital Único">Leilão SFI - Edital Único</option>
+                </select>
+            </div>
+            <!-- Added search button as part of the flex row -->
+            <div class="filter search-button-container">
+                <button class="search-button" (click)="search()">Search</button>
+            </div>
+        </div>
+    </section>
+    <!-- Results Section -->
+    <section class="results-section">
+        <div *ngIf="loading" class="loading">
+            <p>Loading...</p>
+        </div>
+        <div *ngIf="searchError" class="error-message">
+            <p>{{ searchErrorMsg }}</p>
+        </div>
+        <table *ngIf="realEstates$ as realEstates" class="real-estates-table">
+            <thead *ngIf="!searchError">
+                <tr>
+                    <!-- <th>Property Number</th> -->
+                    <th>State</th>
+                    <th>City</th>
+                    <th>Neighborhood</th>
+                    <th>Address</th>
+                    <th>Price</th>
+                    <th>Appraisal Value</th>
+                    <th>Discount</th>
+                    <th>Description</th>
+                    <th>Sale Mode</th>
+                    <th>Details</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let realEstate of realEstates">
+                    <!-- <td>{{ realEstate.propertyNumber }}</td> -->
+                    <td>{{ realEstate.state }}</td>
+                    <td>{{ realEstate.city }}</td>
+                    <td>{{ realEstate.neighborhood }}</td>
+                    <td>{{ realEstate.address }}</td>
+                    <td>{{ realEstate.price }}</td>
+                    <td>{{ realEstate.appraisalValue }}</td>
+                    <td>{{ realEstate.discount }} %</td>
+                    <td>{{ realEstate.description }}</td>
+                    <td>{{ realEstate.saleMode }}</td>
+                    <td>
+                        <a href="{{ realEstate.accessLink }}" target="_blank">Link</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
+
+    <!-- Pagination Section -->
+    <section class="pagination-section">
+        <div class="pagination-controls">
+          <span>Page:</span>
+          <button (click)="updatePageNumber(-2)"><<</button>
+          <button (click)="updatePageNumber(-1)"><</button>
+          <b>{{ page + 1 }}</b>
+          <button (click)="updatePageNumber(1)">></button>
+          <button (click)="updatePageNumber(2)">>></button>
+        </div>
+        <div class="results-per-page">
+          <span>Results per page:</span>
+          <select [formControl]="recordsPerPageControl">
+            <option value="10">10</option>
+            <option value="20">20</option>
+            <option value="50">50</option>
+            <option value="100">100</option>
+          </select>
+        </div>
+      </section>
+</div>

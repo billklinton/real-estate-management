@@ -413,3 +413,4 @@ FodyWeavers.xsd
 /backend/src/RealEstateManagement.Data/bin/Debug/net9.0
 /backend/src/RealEstateManagement.Data/obj
 /backend/.vs
+/frontend/.vscode
