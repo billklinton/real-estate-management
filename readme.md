@@ -31,8 +31,7 @@ It's a .NET 9 WebApi, that uses [Kafka](#kafka) as a messaging service, and [Mon
 
 After running the [docker-compose](#how-to-run) you can access it [here][api-url]
 
-
-With four endpoints, to authenticate, store and request data:
+This API has four endpoints, to authenticate, store and request data:
 
 - **/login ->**
 
@@ -85,7 +84,7 @@ It's a .NET 9 Background Service, that consumes messages from a [Kafka](#kafka) 
 
 ## Frontend
 The frontend is built with Angular, and it has only 2 pages:
-- Login page (You can login with the credentials provided at [WebApi](#webapi))
+- Login page (You can login with the credentials provided at [login](#webapi) request)
   
   ![image](docs/login-page.png)
 
